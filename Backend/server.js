@@ -3,10 +3,14 @@ const dotenv  = require('dotenv');
 const connectDb = require('./config/db');
 const cors = require('cors')
 const app = express();
+const path = require('path');
+const logoRouter = require('./routes/logoroute')
 const userRouter = require('./routes/userRoutes')
+const categoryRouter = require('./routes/categoryroute')
 //load environment var from .env
-
 dotenv.config();
+//upload file creation if needed
+
 
 //db connection
 connectDb();
@@ -14,9 +18,7 @@ app.use(cors());
 //middlewarw for parsing json
 app.use(express.json());
 
-app.get('/',(req,res)=>{
-    res.send('Api is running');
-})
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //define the Port
 const PORT = process.env.PORT || 3000;
@@ -28,3 +30,5 @@ app.listen(PORT,()=>{
 //user router
 
 app.use('/user',userRouter);
+app.use('/category',categoryRouter)
+app.use('/logo',logoRouter);
