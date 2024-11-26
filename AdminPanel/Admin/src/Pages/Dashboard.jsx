@@ -13,7 +13,6 @@ function Dashboard() {
   const location = useLocation();
   const [logo, setLogo] = useState(null);
   const userData = location.state?.userData || {};
-  console.log(userData);
 
 
 
@@ -45,7 +44,6 @@ function Dashboard() {
   const getlogo = async () => {
     try {
       const res = await axios.get('http://localhost:3000/logo/get');
-      console.log(res);
       setLogo(res.data.logoData.reverse())
     }
     catch (err) {
@@ -73,13 +71,11 @@ function Dashboard() {
         <header className='header'>
 
 
-          <h2 className='view-tittle'>DashBaord</h2>
+          <h2 className='view-tittle'>Wellcome! <span className='text-xl font-bold'>{userData.name}</span> </h2>
           <div className='profile-section'>
             <div className='h-[40px] w-[40px] rounded-full'>
-              {logo ? (<img src={`http://localhost:3000/uploads/${logo[0].image}`} className='rounded-full' alt={logo[0].image} />) : (<div><Avatar rounded /></div>)}
+              {/* {logo ? (<img src={`http://localhost:3000/uploads/${logo[0].image}`} className='rounded-full' alt={logo[0].image} />) : (<div><Avatar rounded /></div>)} */}
             </div>
-
-            <span className='profile-name'>{userData.name}</span>
           </div>
 
 

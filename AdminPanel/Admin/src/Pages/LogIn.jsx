@@ -4,6 +4,8 @@ import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 function LogIn() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +37,8 @@ function LogIn() {
         icon: "success"
       });
       navigate('/dashboard', { state: { userData: res.data.userData } });
+      toastr.success(`${res.data.userData.name} Wellcome to Dashbaord `);
+
     }
     catch (err) {
       setError(err.response.data.message);

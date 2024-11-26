@@ -5,12 +5,15 @@ import { Button, Label, TextInput } from 'flowbite-react';
 import Swal from 'sweetalert2';
 function Category() {
   const [category, setCategory] = useState([]);
-  const [model, setModel] = useState(false)
+  const [model, setModel] = useState(false);
+  const [filterData,setFilterData] = useState([])
 
+  //category data fetch
   const getData = async () => {
     try {
       const res = await axios.get('http://localhost:3000/category/get');
       setCategory(res.data.categories);
+      setFilterData(res.data.categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -23,7 +26,10 @@ function Category() {
 
 const categoryAdd = async(e)=>{
   e.preventDefault();
- const newCategory ={name:e.target.name.value};
+ const categoryName = e.target.name.value;
+ const newCategory ={name:categoryName};
+const add = category.find((item)=>(item.name.toLowerCase().includes(categoryName.toLowerCase())));
+if(!add){ 
 try{
   const res = await axios.post('http://localhost:3000/category/add',newCategory);
   getData();
@@ -34,6 +40,10 @@ catch(err){
 
 }
 
+else{
+  Swal.fire('Error!', 'Category exist', 'error');
+}
+}
 //detele
 
 const handleDelete = async (id) => {
@@ -62,13 +72,25 @@ const handleDelete = async (id) => {
   });
 };
 
+//searchHandle
+
+const searchHandle = (e)=>{
+const searchText = e.target.value;
+const trimText = searchText.trim()
+if(trimText){
+const filterdata = category.filter((item)=>(item.name.toLowerCase().includes(trimText.toLowerCase())))
+setFilterData(filterdata);}
+else{
+  setFilterData(category);
+}
+}
 
 return (
     <div className='flex  shadow-2xl rounded-xl  flex-col m-5 min-h-[80vh]'>
       <div className='text-2xl font-bold text-center py-4'> Products Categories</div>
       <div className='flex justify-between mx-32 my-4'>
         <div className=''>
-          <TextInput type='text' className='w-96' placeholder='Search Category' />
+          <TextInput type='text' className='w-96' placeholder='Search Category' name='search' onChange={searchHandle} />
         </div>
         <div>
           <Button className='w-full mt-2' gradientDuoTone='purpleToBlue' onClick={() => setModel(true)}>Add More Categories</Button>
@@ -82,7 +104,7 @@ return (
           </tr>
         </thead>
         <tbody className="text-center">
-          {category.map((item) => (
+          {filterData.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50">
               <td className="border border-gray-300 px-4 py-2">{item.name}</td>
               <td className="border border-gray-300 px-4 py-2">
@@ -98,7 +120,7 @@ return (
         }
         </tbody>
       </table>
-          {category.length <= 0 &&(<div className='text-center mt-4 text-red-600 text-xl'>Not any Category!</div>)}
+          {filterData.length <= 0 &&(<div className='text-center mt-4 text-red-600 text-xl'>Category Not found Please add!</div>)}
 
       {/* model  start*/}
       <Dialog open={model} onClose={setModel} className="relative z-10">
