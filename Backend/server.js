@@ -8,6 +8,7 @@ const logoRouter = require('./routes/logoroute')
 const userRouter = require('./routes/userRoutes')
 const categoryRouter = require('./routes/categoryroute')
 const sliderRouter = require('./routes/sliderroute')
+const ProductRouter = require('./routes/ProductRoute')
 //load environment var from .env
 dotenv.config();
 //upload file creation if needed
@@ -33,4 +34,5 @@ app.listen(PORT,()=>{
 app.use('/user',userRouter);
 app.use('/category',categoryRouter)
 app.use('/logo',logoRouter);
-app.use('/slider',sliderRouter)
+app.use('/slider',sliderRouter);
+app.use('/product',ProductRouter)
