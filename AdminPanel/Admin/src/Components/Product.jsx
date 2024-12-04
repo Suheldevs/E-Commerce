@@ -9,7 +9,6 @@ function Product() {
   const [category, setCategory] = useState([]);
   const [model, setModel] = useState(false);
   const [filterData,setFilterData] = useState([])
-  const [range, setRange] = useState({ min: "", max: "" });
   
   //product data fetch
   const getData = async () => {
@@ -107,7 +106,7 @@ const searchHandle = (e)=>{
 const searchText = e.target.value;
 const trimText = searchText.trim()
 if(trimText){
-const filterdata = product.filter((item)=>(item.ProductName.toLowerCase().includes(trimText.toLowerCase())))
+const filterdata = product.filter((item)=>((item.ProductName.toLowerCase().includes(trimText.toLowerCase())) || (item.ProductCategory.toLowerCase().includes(trimText.toLowerCase()))))
 setFilterData(filterdata);}
 else{
   setFilterData(product);
@@ -115,16 +114,24 @@ else{
 }
 
 
-  const handlePriceRange = (event) => {
-    const selectedOption = event.target.selectedOptions[0]; // Selected option
-    const min = selectedOption.getAttribute("data-min");
-    const max = selectedOption.getAttribute("data-max");
-    setRange({ min, max });
-    console.log(product)
-    console.log(parseInt(product[0].ProductPrice))
-    // const rangedata = product.filter((item.ProductPrice.parseInt))
+const handlePriceRange = (event) => {
+  const selectedOption = event.target.selectedOptions[0]; 
+  const min = parseInt(selectedOption.getAttribute("data-min")); 
+  const max = parseInt(selectedOption.getAttribute("data-max")); 
+  if(max == 0){
+    return setFilterData(product);
+  }
+  console.log(min, max);
 
-  };
+  // Filter products based on price range
+  const rangedata = product.filter((item) => {
+    const price = parseInt(item.ProductPrice); // Convert price to number
+    return price >= min && price <= max; // Check if within range
+  });
+
+  setFilterData(rangedata); // Update the filtered data state
+};
+
 return (
     <div className='flex  shadow-2xl rounded-xl  flex-col m-5 min-h-[80vh]'>
       <div className='text-2xl font-bold text-center py-4'> Products</div>
@@ -133,14 +140,16 @@ return (
           <TextInput type='text' className='w-96' placeholder='Search Products' name='search' onChange={searchHandle} />
         </div>
         <div className=''>
-          <select onChange={handlePriceRange}>
-            <option disabled selected>--select Price--</option>
+          <Select onChange={handlePriceRange}>
+            <option disabled selected>--Select Price Range</option>
+            <option data-min='0' data-max='0'>All</option>
+            <option data-min='1' data-max='1000'>1 - 1000</option>
             <option data-min='1000' data-max='2000'>1000 - 2000</option>
             <option data-min='2000' data-max='3000'>2000 - 3000</option>
             <option data-min='3000' data-max='4000'>3000 - 4000</option>
             <option data-min='4000' data-max='5000'>4000 - 5000</option>
             <option data-min='5000' data-max='6000'>5000 - 6000</option>
-          </select>
+          </Select>
         </div>
         <div>
           <Button className='w-full mt-2' gradientDuoTone='purpleToBlue' onClick={() => setModel(true)}>Add New Product</Button>
