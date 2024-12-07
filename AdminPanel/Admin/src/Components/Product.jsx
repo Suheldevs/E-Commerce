@@ -5,7 +5,7 @@ import { Button, FileInput, Label, Select, Textarea, TextInput } from 'flowbite-
 import Swal from 'sweetalert2';
 function Product() {
   const [product, setproduct] = useState([]);
-  const [image,setImage] = useState(null);
+  const [images,setImages] = useState([]);
   const [category, setCategory] = useState([]);
   const [model, setModel] = useState(false);
   const [filterData,setFilterData] = useState([])
@@ -39,38 +39,64 @@ function Product() {
 
 
 ///handle Image change
-const handleImage = (e)=>{
-  const image = e.target.files[0];
-  setImage(image);
-}
-const productAdd = async(e)=>{
+const handleImage = (e) => {
+  const selectedFiles = Array.from(e.target.files); 
+  setImages({ ...images, Images: selectedFiles });
+  console.log(selectedFiles); 
+};
+
+
+const productAdd = async (e) => {
   e.preventDefault();
- const ProductName = e.target.name.value;
- const ProductPrice = e.target.price.value;
- const ProductImage = image;
- const ProductDescription = e.target.description.value;
- const ProductCategory = e.target.category.value;
 
- const newProduct ={ProductName,ProductPrice,ProductImage,ProductDescription,ProductCategory};
- console.log(newProduct)
-const add = product.find((item)=>(item.ProductName.toLowerCase().includes(ProductName.toLowerCase())));
-if(!add){
-try{
-  const res = await axios.post('http://localhost:3000/product/save',newProduct,{headers:{'Content-Type':'multipart/form-data',},});
-  console.log(res);
-  Swal.fire('Success', 'Product has been added successfully.', 'success');
-}
-catch(err){
-  console.log(err);
-  Swal.fire('Error', 'Failed to add the Product.', 'error');
-}
+  const ProductName = e.target.name.value;
+  const ProductBrand = e.target.brand.value;
+  const ProductPrice = e.target.price.value;
+  const ProductDescription = e.target.description.value;
+  const ProductCategory = e.target.category.value;
 
-}
+  // Check if images are selected
+  if (!images || !images.Images || images.Images.length === 0) {
+    Swal.fire('Error', 'Please upload at least one image.', 'error');
+    return;
+  }
+  if (images.Images.length >=6) {
+    Swal.fire('Error', 'Please upload max 5 images.', 'error');
+    return;
+  }
 
-else{
-  Swal.fire('Error!', 'product exist', 'error');
-}
-}
+  // Create FormData to send images and other fields
+  const formData = new FormData();
+  formData.append("ProductName", ProductName);
+  formData.append("ProductBrand", ProductBrand);
+  formData.append("ProductPrice", ProductPrice);
+  formData.append("ProductDescription", ProductDescription);
+  formData.append("ProductCategory", ProductCategory);
+
+  images.Images.forEach((file) => {
+    formData.append("ProductImages", file);
+  });
+
+  const productExists = product.find((item) =>
+    item.ProductName.toLowerCase().includes(ProductName.toLowerCase())
+  );
+
+  if (!productExists) {
+    try {
+      const res = await axios.post("http://localhost:3000/product/save", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(res);
+      Swal.fire("Success", "Product has been added successfully.", "success");
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to add the Product.", "error");
+    }
+  } else {
+    Swal.fire("Error", "Product already exists.", "error");
+  }
+};
+
 //detele
 
 const handleDelete = async (id) => {
@@ -142,7 +168,7 @@ return (
         <div className=''>
           <Select onChange={handlePriceRange}>
             <option disabled selected>--Select Price Range</option>
-            <option data-min='0' data-max='0'>All</option>
+            <option data-min='0' data-max='1000000000000'>All</option>
             <option data-min='1' data-max='1000'>1 - 1000</option>
             <option data-min='1000' data-max='2000'>1000 - 2000</option>
             <option data-min='2000' data-max='3000'>2000 - 3000</option>
@@ -214,6 +240,8 @@ return (
                     <TextInput type='text' name='name' placeholder='Product Name..'  required/>
                     <Label value='Product Price' />
                     <TextInput type='text' name='price' placeholder='Product Price..' required />
+                    <Label value='Product Brand' />
+                    <TextInput type='text' name='brand' placeholder='Product Brand..' required />
                     <Label value='Product Category'/>
                   <Select name='category'>
                     <option value=''>--Select a category--</option>
@@ -223,7 +251,7 @@ return (
                     <Label value='Product description' />
                     <Textarea type='text' name='description' placeholder='Description' required />
                     <Label value='Product Image' />
-                    <FileInput type='file' name='ProductImage' onChange={handleImage} required/>
+                    <FileInput type='file' name='ProductImage' multiple onChange={handleImage} required/>
           
                 </div>
 

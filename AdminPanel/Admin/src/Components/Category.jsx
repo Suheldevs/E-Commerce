@@ -8,6 +8,9 @@ function Category() {
   const [model, setModel] = useState(false);
   const [filterData,setFilterData] = useState([])
 
+  const handleImagechange = ()=>{
+    
+  }
   //category data fetch
   const getData = async () => {
     try {
@@ -145,6 +148,8 @@ return (
                 <div className="mt-2">
                     <Label value='Category Name' />
                     <TextInput type='text' name='name' placeholder='Type Here..' />
+                    <Label value='Category Logo' />
+                    <TextInput type='file' name='logo' onChange={handleImagechange} />
           
                 </div>
 

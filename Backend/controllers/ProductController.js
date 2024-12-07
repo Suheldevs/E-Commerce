@@ -2,20 +2,22 @@ const Product = require('../models/Productmodel');
 
 const saveProduct = async(req,res)=>{
     try{
-        const {ProductName,ProductCategory,ProductDescription,ProductPrice} = req.body;
-        const ProductImage = req.file ? req.file.filename : null;
-        if(!ProductImage){
-            return res.status(400).json({message:'Product Image is Required'})
+        const {ProductName,ProductCategory,ProductDescription,ProductPrice,ProductBrand} = req.body;
+        const ProductImages = req.files;
+        if(!ProductImages){
+            return res.status(400).json({message:'Product Images is Required'})
         } 
         if(!ProductName || !ProductCategory || !ProductDescription || !ProductPrice || ProductName =='' || ProductPrice == ''){
             return res.status(400).json({message:'All field is required'})
         }
+        const images = ProductImages.map((item)=>item.filename)
         const newSlider =new Product({
             ProductName,
-            ProductPrice,
             ProductCategory,
+            ProductPrice,
+            ProductBrand,
             ProductDescription,
-            ProductImage:ProductImage,
+            ProductImage:images,
         })
 
         const newProductData = await newSlider.save();
