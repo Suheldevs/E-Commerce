@@ -9,7 +9,6 @@ function Product() {
   const [category, setCategory] = useState([]);
   const [model, setModel] = useState(false);
   const [filterData,setFilterData] = useState([])
-  
   //product data fetch
   const getData = async () => {
     try {
@@ -126,6 +125,11 @@ const handleDelete = async (id) => {
   });
 };
 
+//Update
+const handleUpdate= (e,item)=>{
+
+}
+
 //searchHandle
 
 const searchHandle = (e)=>{
@@ -189,17 +193,26 @@ return (
             <th className="border border-gray-300 px-4 py-2">Product Price</th>
             <th className="border border-gray-300 px-4 py-2">Product Category</th>
             <th className="border border-gray-300 px-4 py-2">Product description</th>
-            <th className="border border-gray-300 px-4 py-2">Operations</th>
+            <th className="border border-gray-300 px-4 py-2" colSpan={2}>Operations</th>
           </tr>
         </thead>
         <tbody className="text-center">
           {filterData.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50">
-              <td className="border border-gray-300 px-4 py-2 flex justify-center "><img src={`http://localhost:3000/uploads/${item.ProductImage}`} height={'50px'} width={'70px'}/></td>
+              <td className="border border-gray-300 px-4 py-2 flex justify-center items-center"><img src={`http://localhost:3000/uploads/products/${item.ProductImage[0]}`}  width={'70px'}/></td>
               <td className="border border-gray-300 px-4 py-2">{item.ProductName}</td>
               <td className="border border-gray-300 px-4 py-2">{item.ProductPrice}</td>
               <td className="border border-gray-300 px-4 py-2">{item.ProductCategory}</td>
               <td className="border border-gray-300 px-4 py-2">{item.ProductDescription}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                <button
+                  className="bg-blue-600 hover:bg-purple-600 text-white font-medium py-1 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
+                  onClick={() => handleUpdate(item)}
+                >
+                  Update
+                </button>
+               
+              </td>
               <td className="border border-gray-300 px-4 py-2">
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -207,6 +220,7 @@ return (
                 >
                   Delete
                 </button>
+               
               </td>
             </tr>
           ))

@@ -58,7 +58,7 @@ const ProductSlider = () => {
                                     <h2 className="text-2xl font-bold mb-2">{slide.sliderName}</h2>
                                     <div >
 
-                                        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300  animate-bounce ease-in-out delay-100">
+                                        <button className="bg-blue-600 mt-4 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300  animate-bounce ease-in-out delay-100">
                                             BUY NOW
                                         </button>
                                     </div>
@@ -89,26 +89,26 @@ const ProductSlider = () => {
                                 slidesPerView: 1,
                             }
                         }}
-                        className=" mx-auto mySwiper"
+                        className=" mx-auto mySwiper "
                     >
                         {product.map((product, index) => (
-                            <SwiperSlide key={index} className=" ">
-                                <div className=" w-full h-96">
+                            <SwiperSlide key={index} className="border rounded shadow-lg ">
+                                <div className=" w-full h-72">
                                     <img
-                                        src={`http://localhost:3000/uploads/${product.ProductImage}`}
+                                        src={`http://localhost:3000/uploads/products/${product.ProductImage[0]}`}
                                         alt={`Slide ${index + 1}`}
-                                        className="w-full opacity-100  hover:opacity-90 h-full object-cover rounded-md "
+                                        className="w-full opacity-100  hover:opacity-90 h-full  rounded-md "
                                     />
-                                    <div className="absolute bottom-0 bg-gradient-to-t to-transparent from-gray-500 w-full flex flex-col items-center justify-center text-center top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/ text-white p-6">
-                                        <h2 className="text-xl font-bold mb-2">{product.ProductName}</h2>
-                                        <div className="flex justify-around w-full items-center">
-                                            <div className="flex justify-center bg-blue-500 p-1 rounded items-center">
+                                    <div className="absolute bottom-0 bg-gradient-to-t to-transparent from-white w-full flex flex-col items-center justify-center text-center  left-1/2 -translate-x-1/2   p-6">
+                                        <h2 className=" font-bold mb-2">{product.ProductName}</h2>
+                                        <div className="flex justify-between w-full items-center">
+                                            <div className="flex justify-center bg-black font-semibold text-white p-1 rounded items-center">
                                                 <FaRupeeSign /> {product.ProductPrice}
                                             </div>
                                             <div>
 
-                                                <button className=" text-white hover:bg-blue-600 px-4 py-2 border animate-bounce duration-100 delay-100 rounded-md ">
-                                                    <FaArrowAltCircleRight />
+                                                <button className=" bg-black p-1 border  rounded-md ">
+                                                    <FaArrowAltCircleRight className="text-white"/>
                                                 </button>
                                             </div>
                                         </div>
@@ -127,32 +127,36 @@ const ProductSlider = () => {
 
 
             <div className="md:w-2/3 p-4 w-full ">
-                <div className=" bg-blue-700 rounded-lg mt-24 overflow-visible  shadow-md p-4">
+            <div className="font-extrabold text-black text-center text-xl md:mb-4 mb-1 shadow-2xl border px-1 rounded"><sapn className='text-blue-600'>TOP</sapn> DEAL TODAY</div>
+            {product.slice(2,4).map((item)=>(
+
+                <div className="border rounded-lg overflow-visible  shadow-md mb-4">
                     {/* Product Image */}
-                    <div className="w-full h-56  flex items-center justify-center">
+                    <div className="w-full h-56  hover:scale-105 transition-all duration-100 ease-in-out flex items-center justify-center">
                         <img
-                            src={`http://localhost:3000/uploads/1733298480713_car1.png`}
+                            src={`http://localhost:3000/uploads/products/${item.ProductImage[1]}`}
                             alt='title'
-                            className="h-full object-contain mt-[-50%]"
+                            className="h-full object-cover "
                         />
                     </div>
 
                     {/* Product Info */}
-                    <div className="px-4 mt-[-30%] text-center text-white">
-                        <h3 className="text-xl font-semibold">title</h3>
-                        <p className="text-sm mt-2">description</p>
-                        <p className="mt-4 text-lg font-bold">$price</p>
+                    <div className="px-4  text-center text-whit">
+                        <h3 className="text-xl font-semibold">{item.ProductName}</h3>
+                        <p className="mt-4 text-lg font-bold">INR {item.ProductPrice}</p>
                     </div>
 
                     {/* Add to Cart Button */}
                     <div className="rounded-xl m-4 bg-white text-blue-700 text-center">
-                        <button className="  font-semibold uppercase hover:bg-slate-200 hover:text-blue-500 w-full py-2 rounded">
+                        <button className="  font-semibold uppercase bg-slate-200 hover:text-blue-500 w-full py-2 rounded">
                             Add to Cart
                         </button>
                     </div>
                 </div>
-                <div className=" bg-blue-700 mt-24 rounded-lg overflow-visible shadow-md p-4">
-                    {/* Product Image */}
+            ))}
+
+
+                {/* <div className=" bg-blue-700 mt-24 rounded-lg overflow-visible shadow-md p-4">
                     <div className="w-full h-56  flex items-center justify-center">
                         <img
                             src={`http://localhost:3000/uploads/1733298480713_car1.png`}
@@ -161,20 +165,18 @@ const ProductSlider = () => {
                         />
                     </div>
 
-                    {/* Product Info */}
                     <div className="px-4 mt-[-30%] text-center text-white">
                         <h3 className="text-xl font-semibold">title</h3>
                         <p className="text-sm mt-2">description</p>
                         <p className="mt-4 text-lg font-bold">$price</p>
                     </div>
 
-                    {/* Add to Cart Button */}
                     <div className="rounded-xl m-4 bg-white text-center">
                         <button className="text-blue-700  hover:bg-slate-200 hover:text-blue-500 font-semibold uppercase w-full py-2 rounded">
                             Add to Cart
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

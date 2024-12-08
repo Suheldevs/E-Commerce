@@ -61,4 +61,25 @@ const deleteProduct = async(req,res)=>{
     }
 }
 
-module.exports = {saveProduct,getproduct,deleteProduct}
+const updateProduct = async(req,res)=>{
+    try{
+        const {id} = req.params;
+        if(!id){
+            return res.status(400).json({message:'Project Not Found'})
+        }
+        const body = req.body;
+        if(!body){
+            return res.status(400).json({message:'All field required'})
+        }
+        const updatedProduct = await Product.findByIdAndUpdate(id,body,{new:true})
+        if(updatedProduct){
+            return res.status(200).json({message:'Product Updated succefully',updateProduct:updatedProduct})
+        }
+        return res.status(200).json({message:'Product not Updated '});
+    }
+    catch(err){
+        res.status(500).json({message:'Internal Server Error',Error: err});
+    }
+}
+
+module.exports = {saveProduct,getproduct,deleteProduct,updateProduct}

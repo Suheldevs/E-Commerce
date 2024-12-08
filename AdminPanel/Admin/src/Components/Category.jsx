@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Input } from '@headlessui/react'
-import { Button, Label, TextInput } from 'flowbite-react';
+import { Button, FileInput, Label, TextInput } from 'flowbite-react';
 import Swal from 'sweetalert2';
 function Category() {
   const [category, setCategory] = useState([]);
   const [model, setModel] = useState(false);
   const [filterData,setFilterData] = useState([])
-
-  const handleImagechange = ()=>{
-    
+  const [logo,setLogo] = useState(null)
+  const handleImagechange = (e)=>{
+    setLogo(e.target.files[0])
   }
   //category data fetch
   const getData = async () => {
@@ -29,15 +29,18 @@ function Category() {
 
 const categoryAdd = async(e)=>{
   e.preventDefault();
- const categoryName = e.target.name.value;
- const newCategory ={name:categoryName};
-const add = category.find((item)=>(item.name.toLowerCase().includes(categoryName.toLowerCase())));
+ const name = e.target.name.value;
+ const formData= {name,logo}
+ console.log(formData)
+const add = category.find((item)=>(item.name.toLowerCase().includes(name.toLowerCase())));
 if(!add){ 
 try{
-  const res = await axios.post('http://localhost:3000/category/add',newCategory);
+  const res = await axios.post('http://localhost:3000/category/add',formData,{ headers: { "Content-Type": "multipart/form-data" },});
+  Swal.fire("Success", "Category has been added successfully.", "success");
   getData();
 }
 catch(err){
+  Swal.fire("Error", "Product not added server Error", "error");
   console.log(err)
 }
 
@@ -102,6 +105,7 @@ return (
       <table className="table-auto mx-24 border-collapse border border-gray-200">
         <thead className="bg-gray-100">
           <tr>
+            <th className="border border-gray-300 px-4 py-2">Category Logo</th>
             <th className="border border-gray-300 px-4 py-2">Category Name</th>
             <th className="border border-gray-300 px-4 py-2">Operations</th>
           </tr>
@@ -109,6 +113,7 @@ return (
         <tbody className="text-center">
           {filterData.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2 flex justify-center items-center"><img src={`http://localhost:3000/uploads/category/${item.logo}`} width={'80px'}/></td>
               <td className="border border-gray-300 px-4 py-2">{item.name}</td>
               <td className="border border-gray-300 px-4 py-2">
                 <button
@@ -149,7 +154,7 @@ return (
                     <Label value='Category Name' />
                     <TextInput type='text' name='name' placeholder='Type Here..' />
                     <Label value='Category Logo' />
-                    <TextInput type='file' name='logo' onChange={handleImagechange} />
+                    <FileInput type='file' name='logo' onChange={handleImagechange} />
           
                 </div>
 

@@ -3,7 +3,10 @@ const Category = require('../models/categorymodel')
 const addCategory = async(req,res)=>{
     try{
         const {name} = req.body;
-       const file = req.file ? req.file.filename :'null';
+       const file = req.file.filename;
+       if(!file){
+        return res.status(400).json({message:'Logo not updated yet!'})
+       }
         const newCategory = new Category({name,logo:file});
         await newCategory.save();
         return res.status(200).json({message:'Category save successfully',category:newCategory})
