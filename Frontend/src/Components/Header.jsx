@@ -15,7 +15,7 @@ const Header = () => {
       <div className="container mx-auto flex items-center px-1 py-2 justify-between  top-0 z-50  ">
         {/* Logo */}
         <div className="text-2xl font-bold text-blue-700">
-          <Link to="/"><span className="px-3 py-1 rounded bg-blue-700 text-white">Tech</span><span className="">Orbite</span></Link>
+          <Link to="/"><span className="px-3 py-1 rounded bg-blue-700 text-white">Tech</span><span className=""> Orbite</span></Link>
         </div>
 
         {/* Search Bar for Mobile Screens */}
@@ -50,12 +50,12 @@ const Header = () => {
         <div className="flex justify-center items-center md:gap-10 gap-3  mr-0">
           <div className="hidden md:flex items-center space-x-6 w-full justify-center">
             {/* Navigation Links */}
-            <nav className="flex items-center space-x-6">
-              <Link to="/" className="text-gray-600 hover:text-blue-700">
+            <nav className="flex items-center space-x-6 ">
+              <Link to="/" className="text-gray-600 text-semibold hover:text-blue-700">
                 Home
               </Link>
-              <Link to="/shop" className="text-gray-600 hover:text-blue-700">
-                Shop
+              <Link to="/products" className="text-gray-600 hover:text-blue-700">
+                Products
               </Link>
               <Link to="/about" className="text-gray-600 hover:text-blue-700">
                 About
@@ -70,10 +70,12 @@ const Header = () => {
           <div>
             <div className="flex items-center space-x-4">
               <div className="relative">
+                <Link to='/cart'>
                 <FaShoppingCart className="text-blue-700 text-2xl cursor-pointer" />
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
                   {cartCount}
                 </span>
+                </Link>
               </div>
               <div className='w-10'>
                 <Dropdown
