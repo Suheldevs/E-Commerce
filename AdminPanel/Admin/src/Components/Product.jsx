@@ -155,8 +155,8 @@ const handlePriceRange = (event) => {
 
   // Filter products based on price range
   const rangedata = product.filter((item) => {
-    const price = parseInt(item.ProductPrice); // Convert price to number
-    return price >= min && price <= max; // Check if within range
+    const price = parseInt(item.ProductPrice); 
+    return price >= min && price <= max; 
   });
 
   setFilterData(rangedata); // Update the filtered data state

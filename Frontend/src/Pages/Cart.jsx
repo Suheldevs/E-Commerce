@@ -12,7 +12,6 @@ function Cart() {
             quantity: item.quantity || 1,
         }));
         setCartItems(updateItems);
-        console.log(cartItems)
         const initialTotal = updateItems.reduce(
             (total, item) => total + item.ProductPrice * item.quantity,
             0
@@ -25,7 +24,7 @@ function Cart() {
         const updateItems = [...cartItems];
         updateItems[index].quantity = newQuanatity;
         setCartItems(updateItems);
-        localStorage.setItem('cartItem', JSON.stringify(updateItems));
+        localStorage.setItem('CartItems', JSON.stringify(updateItems));
 
         const newTotal = updateItems.reduce((total, item) => total + item.ProductPrice * item.quantity, 0);
         setTotalPrice(newTotal);
@@ -34,10 +33,39 @@ function Cart() {
     const handleRemoveItem = (index) => {
         const updateItems = cartItems.filter((_, i) => i !== index);
         setCartItems(updateItems);
-        localStorage.setItem('cartItem', JSON.stringify(updateItems));
+        alert(updateItems.length)
+        localStorage.setItem('CartItems', JSON.stringify(updateItems));
 
         const newTotal = updateItems.reduce((total, item) => total + item.ProductPrice * item.quantity, 0);
         setTotalPrice(newTotal);
+    }
+
+    const handlePayNow = ()=>{
+        const options = {
+            key:'rzp_live_HGCsLV5PjSYo8F',
+            amount:totalPrice*100,
+            currency:"INR",
+            name:'TechOrbite',
+            description:'Order Payment',
+            image:'https://yourlogo.com',
+            handler:function(response){
+                alert('Payment successfull!' + response.razorpay_payment_id);
+            },
+            prefill:{
+                name:'customer Name',
+                email:'test@gmail.com',
+                contact:'9519838720',
+
+            },
+            notes:{
+                address:"werty",
+            },
+            theme:{
+                color:'#FFFFF',
+            },
+        };
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
     }
     return (
         <div className="container mx-auto md:p-4 p-2 w-screen mt-4">
@@ -88,7 +116,9 @@ function Cart() {
                 </table>
                 <div className="mt-6 flex justify-around items-center">
                     <div className="text-lg font-semibold text-gray-800">Total: INR {totalPrice}</div>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                    onClick={handlePayNow}
+                    >
                         Pay Now
                     </button>
                 </div>

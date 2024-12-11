@@ -1,28 +1,49 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { FaBoxOpen, FaCartPlus, FaCashRegister, FaHeart, FaRedo, FaStar, FaTruck } from "react-icons/fa";
+import { toast, ToastContainer } from 'react-toastify';
+
 
 const ProductView = () => {
+
   const location = useLocation();
-  const {
-    ProductCategory,
-    ProductName,
-    ProductPrice,
-    ProductDescription,
-    ProductBrand,
-    ProductImage,
-  } = location.state;
-  const [image, setImage] = useState(ProductImage[0])
+  const productData = location.state;
+  const [image, setImage] = useState(productData.ProductImage[0])
+
   const handleImageChange = (changeImage) => {
     setImage(changeImage)
   }
+  
+  const handleAddToCart = (product) => {
+    const cartItem = JSON.parse(localStorage.getItem('CartItems')) || [];
+    const len = cartItem.length;
+      if(len > 0){
+        const addAllready=  cartItem.filter((item)=>(item._id == product._id));
+        const length =  addAllready.length ;
+        console.log(length);
+        if(length == 0 ){
+            cartItem.push(product);
+            localStorage.setItem("CartItems", JSON.stringify(cartItem))
+            toast.success("Product added in cart !!")
+        }
+        else{
+            return toast.error("Product already in cart!")
+          }
+      }
+      else{
+        cartItem.push(product);
+        localStorage.setItem("CartItems", JSON.stringify(cartItem))
+        toast.success("Product added in cart !!")
+      }
+  }
+  
   return (
     <div className="container mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Images Section */}
         <div>
           <div className="flex space-x-4 justify-center items-center">
-            {ProductImage.map((image, index) => (
+            {productData.ProductImage.map((image, index) => (
               <img
                 key={index}
                 src={`http://localhost:3000/uploads/products/${image}`}
@@ -35,7 +56,7 @@ const ProductView = () => {
           <div className="mt-4">
             <img
               src={`http://localhost:3000/uploads/products/${image}`}
-              alt={ProductName}
+              alt={productData.ProductName}
               className="w-full min-h-[70vh] rounded-lg shadow-md border-4"
             />
           </div>
@@ -44,20 +65,20 @@ const ProductView = () => {
 
         {/* Product Details Section */}
         <div className="text-center md:min-h-screen md:mt-10">
-          <h2 className="text-3xl font-bold text-gray-800">{ProductName}</h2>
-          <p className="text-sm text-gray-500 mt-1">{ProductCategory}</p>
+          <h2 className="text-3xl font-bold text-gray-800">{productData.ProductName}</h2>
+          <p className="text-sm text-gray-500 mt-1">{productData.ProductCategory}</p>
           <div className="text-lg text-gray-600 mt-4">
-            <span className="font-semibold">Brand:</span> {ProductBrand}
+            <span className="font-semibold">Brand:</span> {productData.ProductBrand}
           </div>
           <div className="text-2xl text-blue-600 font-semibold mt-2">
-            INR {ProductPrice}
+            INR {productData.ProductPrice}
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-4 mt-6 justify-center">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded flex items-center">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded flex items-center" onClick={()=>handleAddToCart(productData)} >
               <FaCartPlus className="mr-2" />
-              Add to Cart
+              Add to Cart <ToastContainer />
             </button>
             <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded flex items-center">
               <FaHeart className="mr-2" />
@@ -66,23 +87,23 @@ const ProductView = () => {
           </div>
           <div className="mt-5 font-bold text-center text-xl uppercase ">Product Description</div>
           <div className="text-start">
-          <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(0, 50)}</li>
-          <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(51, 100)}</li>
-          {ProductDescription.slice(101, 150) && (
-            <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(101, 150)}</li>
+          <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(0, 50)}</li>
+          <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(51, 100)}</li>
+          {productData.ProductDescription.slice(101, 150) && (
+            <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(101, 150)}</li>
           )
           }
-          {ProductDescription.slice(151, 200) && (
-            <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(151, 200)}</li>
+          {productData.ProductDescription.slice(151, 200) && (
+            <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(151, 200)}</li>
           )}
-          {ProductDescription.slice(200, 250) && (
-          <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(200, 250)}</li>
+          {productData.ProductDescription.slice(200, 250) && (
+          <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(200, 250)}</li>
           )}
-          {ProductDescription.slice(251, 300) && (
-          <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(251, 300)}</li>
+          {productData.ProductDescription.slice(251, 300) && (
+          <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(251, 300)}</li>
           )}
-          {ProductDescription.slice(301, 350) && (
-          <li className="text-gray-700 mt-2 px-6">{ProductDescription.slice(301, 350)}</li>
+          {productData.ProductDescription.slice(301, 350) && (
+          <li className="text-gray-700 mt-2 px-6">{productData.ProductDescription.slice(301, 350)}</li>
           )}
           </div>
           <div className="container mx-auto px-4 mt-4 py-6">

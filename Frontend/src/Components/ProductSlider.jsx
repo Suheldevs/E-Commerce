@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import axios from "axios";
 import { FaArrowAltCircleRight, FaBoxOpen, FaCartPlus, FaCashRegister, FaEye, FaRedo, FaRupeeSign, FaShoppingCart, FaStar, FaTruck } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-
+import { toast, ToastContainer } from 'react-toastify';
 const ProductSlider = () => {
     const navigate = useNavigate();
     const [sliderData, setSliderData] = useState([]);
@@ -36,6 +36,33 @@ const ProductSlider = () => {
     const handleView = (product)=>{
 navigate(`/product-view/${product._id}`,{state:product})
     }
+
+
+    const handleAddToCart = (product) => {
+        const cartItem = JSON.parse(localStorage.getItem('CartItems')) || [];
+        const len = cartItem.length;
+          if(len > 0){
+            const addAllready=  cartItem.filter((item)=>(item._id == product._id));
+            const length =  addAllready.length ;
+            console.log(length);
+            if(length == 0 ){
+                cartItem.push(product);
+                localStorage.setItem("CartItems", JSON.stringify(cartItem))
+                toast.success("Product added in cart !!")
+            }
+            else{
+                return toast.error("Product already in cart!")
+              }
+          }
+          else{
+            cartItem.push(product);
+            localStorage.setItem("CartItems", JSON.stringify(cartItem))
+            toast.success("Product added in cart !!")
+          }
+      }
+      const handleSliderBuyNowBtn = ()=>{
+        toast.info('Sorry slider product is only for show case, try card products!')
+      }
     return (
         <div className="md:flex block">
             <div className="md:w-2/3 w-full md:p-4 p-2">
@@ -62,7 +89,7 @@ navigate(`/product-view/${product._id}`,{state:product})
                                     <h2 className="text-2xl font-bold mb-2">{slide.sliderName}</h2>
                                     <div >
 
-                                        <button className="bg-blue-600 mt-4 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300  animate-bounce ease-in-out delay-100">
+                                        <button className="bg-blue-600 mt-4 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300  animate-bounce ease-in-out delay-100"onClick={handleSliderBuyNowBtn}>
                                             BUY NOW
                                         </button>
                                     </div>
@@ -206,7 +233,7 @@ navigate(`/product-view/${product._id}`,{state:product})
                         {/* Add to Cart Button */}
                         <div className="rounded-xl m-4 bg-white text-blue-700 text-center">
                         <button className="  font-semibold uppercase bg-slate-200 hover:text-blue-500 flex justify-center items-center w-full py-2 rounded" onClick={() => handleAddToCart(item)}>
-                                        <FaCartPlus className="mr-2" />Add to Cart
+                                        <FaCartPlus className="mr-2" />Add to Cart <ToastContainer/>
                                     </button>
                         </div>
                     </div>

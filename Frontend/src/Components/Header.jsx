@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch, FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Avatar, Dropdown } from 'flowbite-react'
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(3); // Example cart count
+  const [cartItem, setCartItem] = useState(0)
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+useEffect(()=>{
+  const storedItems = JSON.parse(localStorage.getItem('CartItems')) || [];
+  setCartItem(storedItems.length)
+  const handleStorage = ()=>{
+setCartItem(storedItems.length);
+  }
 
+  window.addEventListener("storage",handleStorage)
+  return ()=>{
+  window.addEventListener("storage",handleStorage)
+
+}
+
+})
   return (
     <header className="bg-white shadow-md w-full">
       <div className="container mx-auto flex items-center px-1 py-2 justify-between  top-0 z-50  ">
@@ -73,7 +86,7 @@ const Header = () => {
                 <Link to='/cart'>
                 <FaShoppingCart className="text-blue-700 text-2xl cursor-pointer" />
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
-                  {cartCount}
+                  {cartItem}
                 </span>
                 </Link>
               </div>

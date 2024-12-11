@@ -6,13 +6,14 @@ import Cart from './Pages/Cart'
 import Products from './Pages/Products'
 import ProductView from './Pages/ProductView'
 import Footer from './Components/Footer';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 3000);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, []);
