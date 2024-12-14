@@ -82,7 +82,12 @@ navigate(`/product-view/${product._id}`,{state:product})
                                 <img
                                     src={`http://localhost:3000/uploads/${slide.sliderImage}`}
                                     alt={`Slide ${index + 1}`}
+                                    loading="lazy"
                                     className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.target.src =
+                                          "http://localhost:3000/uploads/image_Not_found.jpg";
+                                      }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent  opacity-75  "></div>
                                 <div className="absolute top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white flex-col flex justify-center items-center ">
@@ -99,7 +104,7 @@ navigate(`/product-view/${product._id}`,{state:product})
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                <div className="md:p-4 p-2 md:mx-10">
+                <div className="md:p-4 p-2 mt-2 md:mx-10   dark:bg-slate-600">
                     <Swiper
                         modules={[Navigation, Pagination, Autoplay]}
                         navigation={true}
@@ -132,14 +137,19 @@ navigate(`/product-view/${product._id}`,{state:product})
                                         src={`http://localhost:3000/uploads/products/${product.ProductImage[0]}`}
                                         alt={`Slide ${index + 1}`}
                                         className="w-full h-full object-cover rounded-lg"
+                                        loading="lazy"
+                                        onError={(e) => {
+                                            e.target.src =
+                                              "http://localhost:3000/uploads/image_Not_found.jpg";
+                                          }}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent rounded-lg">
-                                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center p-4 w-11/12 bg-white/80 rounded-lg shadow backdrop-blur">
-                                            <h2 className="text-lg font-bold text-gray-800 truncate">
+                                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center p-4 w-11/12 bg-white/80 dark:bg-slate-700 rounded-lg shadow backdrop-blur">
+                                            <h2 className="text-lg font-bold  truncate">
                                                 {product.ProductName}
                                             </h2>
                                             <div className="flex justify-between items-center mt-3">
-                                                <div className="flex items-center gap-1 bg-blue-600 text-white font-medium px-2 py-1 rounded shadow">
+                                                <div className="flex items-center gap-1 bg-blue-600 font-medium px-2 py-1 rounded shadow">
                                                     <FaRupeeSign />
                                                     <span>{product.ProductPrice}</span>
                                                 </div>
@@ -148,7 +158,7 @@ navigate(`/product-view/${product._id}`,{state:product})
                                                     aria-label="View Product"
                                                     onClick={()=>handleView(product)}
                                                 >
-                                                    <FaEye className="text-white" />
+                                                    <FaEye className="" />
                                                     
                                                 </button>
                                             </div>
@@ -166,42 +176,42 @@ navigate(`/product-view/${product._id}`,{state:product})
 
 
                 <div className="text-blue-600 font-semibold text-center text-lg underline underline-offset-2"><Link to='/products'>More Products</Link></div>
-                <div className="container mx-auto px-4 mt-0 py-6">
+                <div className="container mx-auto px-4 mt-2 py-4  dark:bg-slate-600 rounded">
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5  text-center">
                         {/* Feature 1 */}
                         <div className="flex flex-col items-center justify-center space-y-2">
                             <div className="bg-gray-100 p-4 rounded-full shadow-md">
                                 <FaCashRegister className="text-blue-500 text-2xl" />
                             </div>
-                            <p className="text-gray-700 text-sm font-medium">Pay on Delivery</p>
+                            <p className=" text-sm font-medium">Pay on Delivery</p>
                         </div>
                         {/* Feature 2 */}
                         <div className="flex flex-col items-center justify-center space-y-2">
                             <div className="bg-gray-100 p-4 rounded-full shadow-md">
                                 <FaRedo className="text-blue-500 text-2xl" />
                             </div>
-                            <p className="text-gray-700 text-sm font-medium">7 Days Replacement</p>
+                            <p className=" text-sm font-medium">7 Days Replacement</p>
                         </div>
                         {/* Feature 3 */}
                         <div className="flex flex-col items-center justify-center space-y-2">
                             <div className="bg-gray-100 p-4 rounded-full shadow-md">
                                 <FaBoxOpen className="text-blue-500 text-2xl" />
                             </div>
-                            <p className="text-gray-700 text-sm font-medium">Amazon Delivered</p>
+                            <p className=" text-sm font-medium">Amazon Delivered</p>
                         </div>
                         {/* Feature 4 */}
                         <div className="flex flex-col items-center justify-center space-y-2">
                             <div className="bg-gray-100 p-4 rounded-full shadow-md">
                                 <FaTruck className="text-blue-500 text-2xl" />
                             </div>
-                            <p className="text-gray-700 text-sm font-medium">Free Delivery</p>
+                            <p className=" text-sm font-medium">Free Delivery</p>
                         </div>
                         {/* Feature 5 */}
                         <div className="flex flex-col items-center justify-center space-y-2">
                             <div className="bg-gray-100 p-4 rounded-full shadow-md">
                                 <FaStar className="text-blue-500 text-2xl" />
                             </div>
-                            <p className="text-gray-700 text-sm font-medium">Top Brands</p>
+                            <p className=" text-sm font-medium">Top Brands</p>
                         </div>
                     </div>
                 </div>
@@ -211,7 +221,7 @@ navigate(`/product-view/${product._id}`,{state:product})
 
 
             <div className="md:w-2/3 p-4 w-full ">
-                <div className="font-extrabold text-black text-center text-xl md:mb-4 mb-1 shadow-2xl border px-1 rounded"><sapn className='text-blue-600'>TOP</sapn> DEAL TODAY</div>
+                <div className="font-extrabold  text-center text-xl md:mb-4 mb-1 shadow-2xl border px-1 rounded"><sapn className='text-blue-600'>TOP</sapn> DEAL TODAY</div>
                 {product.slice(2, 4).map((item) => (
 
                     <div className="border rounded-lg overflow-visible  shadow-md mb-4">
@@ -220,7 +230,12 @@ navigate(`/product-view/${product._id}`,{state:product})
                             <img
                                 src={`http://localhost:3000/uploads/products/${item.ProductImage[1]}`}
                                 alt='title'
-                                className="h-full object-cover "
+                                className="h-full object-cover bg-transparent aspect-w-16 aspect-h-9"
+                                loading="lazy"
+                                onError={(e) => {
+                                    e.target.src =
+                                      "http://localhost:3000/uploads/image_Not_found.jpg";
+                                  }}
                             />
                         </div>
 

@@ -44,8 +44,8 @@ function ProductCard() {
       }
     return (
         <div>
-            <div className=" px-4 py-3 w-full bg-slate-50 mb-2 ">
-                <div className="font-extrabold text-black text-center  text-xl md:mb-4 mb-1 shadow-2xl  px-1 "><sapn className='text-blue-600'>HOT</sapn> PRODUCTS</div>
+            <div className=" px-4 py-3 w-full mb-2 dark:bg-slate-700">
+                <div className="font-extrabold  text-center  text-xl md:mb-4 mb-1 shadow-2xl  px-1 "><sapn className='text-blue-600'>HOT</sapn> PRODUCTS</div>
               
                     <div className=' w-full grid md:grid-cols-4 grid-cols-2 md:gap-4 gap-2'>
                         {product.slice(0,8).map((item) => (
@@ -61,7 +61,7 @@ function ProductCard() {
                                 </div>
 
                                 {/* Product Info */}
-                                <div className="text-center md:px-4 px-2 mx-2">
+                                <div className="text-center dark:text-black md:px-4 px-2 mx-2">
                                     <h3 className="text-lg truncate ">{item.ProductName}</h3>
                                     <p className="md:mt-4 mt-2 text-lg md:font-bold font-semibold">INR {item.ProductPrice}</p>
                                 </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import Header from './Components/Header'
 import Home from './Pages/Home'
@@ -7,9 +7,9 @@ import Products from './Pages/Products'
 import ProductView from './Pages/ProductView'
 import Footer from './Components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeContext } from './Context/ThemeContext'
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -29,7 +29,11 @@ function App() {
             
         );
     }
+    const test = useContext(ThemeContext)
   return (
+    <div className={`${test.theme === "light"?'bg-slate-800 text-white dark':'bg-slate-50 text-black ' }`}>
+
+   
     <BrowserRouter>
       <Header/>
     <Routes>
@@ -40,6 +44,7 @@ function App() {
     </Routes>
     <Footer/>
     </BrowserRouter>
+    </div>
   )
 }
 

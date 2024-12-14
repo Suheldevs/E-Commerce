@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay ,} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -30,7 +30,7 @@ function Category() {
                     modules={[Navigation, Pagination, Autoplay]}
                     navigation={false}
                     pagination={{ clickable: true, dynamicBullets: true, }}
-                    autoplay={{ delay: 2000 }}
+                    autoplay={{ delay: 1000 }}
                     loop={true}
                     breakpoints={{
                         1024: {
@@ -56,6 +56,10 @@ function Category() {
                                         src={`http://localhost:3000/uploads/category/${category.logo}`}
                                         loading='lazy'
                                         alt={`Slide ${index + 1}`}
+                                        onError={(e) => {
+                                            e.target.src =
+                                              "http://localhost:3000/uploads/image_Not_found.jpg";
+                                          }}
                                         className="w-24 h-24 rounded-full shadow-lg hover:scale-105 transition ease-in-out object-cover"
                                     />
                                 </div>

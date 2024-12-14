@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { FaSearch, FaBars, FaTimes, FaShoppingCart } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from "react";
+import { FaSearch, FaBars, FaTimes, FaShoppingCart, FaSun, FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Avatar, Dropdown } from 'flowbite-react'
+import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../Context/ThemeContext";
 const Header = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartItem, setCartItem] = useState(0)
+  const [searchText,setSearchText] = useState('')
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -18,16 +22,23 @@ setCartItem(storedItems.length);
 
   window.addEventListener("storage",handleStorage)
   return ()=>{
-  window.addEventListener("storage",handleStorage)
+    window.addEventListener("storage",handleStorage)
+    
+  }
+  
+})
+const handleSearch = ()=>{
+  console.log('h')
+console.log(searchText);
 
 }
+const test = useContext(ThemeContext)
 
-})
   return (
-    <header className="bg-white shadow-md w-full">
+    <header className=" shadow-md w-full">
       <div className="container mx-auto flex items-center px-1 py-2 justify-between  top-0 z-50  ">
         {/* Logo */}
-        <div className="text-2xl font-bold text-blue-700">
+        <div className="text-2xl font-bold ">
           <Link to="/"><span className="px-3 py-1 rounded bg-blue-700 text-white">Tech</span><span className=""> Orbite</span></Link>
         </div>
 
@@ -35,6 +46,7 @@ setCartItem(storedItems.length);
         <div className="block md:hidden w-2/6">
           <div className="flex items-center">
             <input
+              name="searchtext"
               type="text"
               placeholder="Search pro..."
               className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -51,10 +63,12 @@ setCartItem(storedItems.length);
         <div className="hidden md:flex items-center w-1/3">
           <input
             type="text"
+            name="search"
             placeholder="Search products..."
             className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:ring-blue-300"
+            onChange={(e)=>setSearchText(e.target.value)}
           />
-          <button className="bg-blue-700 text-white px-4 py-3 rounded-r-md hover:bg-blue-800">
+          <button className="bg-blue-700 text-white px-4 py-3 rounded-r-md hover:bg-blue-800" type="submit" onClick={handleSearch} >
             <FaSearch />
           </button>
         </div>
@@ -64,18 +78,19 @@ setCartItem(storedItems.length);
           <div className="hidden md:flex items-center space-x-6 w-full justify-center">
             {/* Navigation Links */}
             <nav className="flex items-center space-x-6 ">
-              <Link to="/" className="text-gray-600 text-semibold hover:text-blue-700">
+              <Link to="/" className=" text-semibold hover:text-blue-700">
                 Home
               </Link>
-              <Link to="/products" className="text-gray-600 hover:text-blue-700">
+              <Link to="/products" className=" hover:text-blue-700">
                 Products
               </Link>
-              <Link to="/about" className="text-gray-600 hover:text-blue-700">
+              <Link to="/about" className=" hover:text-blue-700">
                 About
               </Link>
-              <Link to="/contact" className="text-gray-600 hover:text-blue-700">
+              <Link to="/contact" className=" hover:text-blue-700">
                 Contact
               </Link>
+              <button onClick={test.toggelTheme} className="border-2 p-2 rounded-full">{test.theme == 'light'?(<FaSun/>):(<FaMoon/>)}</button>
             </nav>
           </div>
 
@@ -85,7 +100,7 @@ setCartItem(storedItems.length);
               <div className="relative">
                 <Link to='/cart'>
                 <FaShoppingCart className="text-blue-700 text-2xl cursor-pointer" />
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
+                <span className="absolute -top-2 -right-2 bg-red-600  text-xs rounded-full px-2">
                   {cartItem}
                 </span>
                 </Link>
@@ -98,14 +113,14 @@ setCartItem(storedItems.length);
                     <Avatar alt="User" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                   }
                 >
-                  <Dropdown.Header>
+                  <Dropdown.Header className="dark:text-white">
                     Mohd Suhel
                   </Dropdown.Header>
-                  <Dropdown.Item>Dashboard</Dropdown.Item>
-                  <Dropdown.Item>View Cart</Dropdown.Item>
-                  <Dropdown.Item>Orders</Dropdown.Item>
+                  <Dropdown.Item className="dark:text-white">Dashboard</Dropdown.Item>
+                  <Dropdown.Item className="dark:text-white">View Cart</Dropdown.Item>
+                  <Dropdown.Item className="dark:text-white">Orders</Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item>Account</Dropdown.Item>
+                  <Dropdown.Item className="dark:text-white">Account</Dropdown.Item>
                 </Dropdown>
               </div>
             </div>
@@ -123,31 +138,35 @@ setCartItem(storedItems.length);
       </div>
       {/* Navigation Links for Mobile Screens */}
       {menuOpen && (
-        <nav className="block md:hidden bg-white shadow-md">
-          <ul className="flex flex-col space-y-4 px-4 py-4">
-            <li>
-              <Link to="/" className="text-gray-600 hover:text-blue-700">
+        <nav className="block md:hidden  shadow-md">
+          <ul className="flex flex-col space-y-1 px-4 py-4">
+            <li className="dark:bg-slate-700 p-2">
+              <Link to="/" className=" hover:text-blue-700">
                 Home
               </Link>
             </li>
-            <li>
-              <Link to="/shop" className="text-gray-600 hover:text-blue-700">
+            <li className="dark:bg-slate-700 p-2">
+              <Link to="/shop" className=" hover:text-blue-700">
                 Shop
               </Link>
             </li>
-            <li>
-              <Link to="/about" className="text-gray-600 hover:text-blue-700">
+            <li className="dark:bg-slate-700 p-2">
+              <Link to="/about" className=" hover:text-blue-700">
                 About
               </Link>
             </li>
-            <li>
-              <Link to="/contact" className="text-gray-600 hover:text-blue-700">
+            <li className="dark:bg-slate-700 p-2">
+              <Link to="/contact" className=" hover:text-blue-700">
                 Contact
               </Link>
+            </li>
+            <li className="dark:bg-slate-700 p-2">
+            <button onClick={test.toggelTheme} className="border-2 p-2 rounded-full">{test.theme == 'light'?(<FaSun/>):(<FaMoon/>)}</button>
             </li>
           </ul>
         </nav>
       )}
+      <hr/>
     </header>
   );
 };
